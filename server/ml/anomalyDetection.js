@@ -1,10 +1,10 @@
 const { IsolationForest } = require('isolation-forest');
 const { db } = require('../config/firebase-config');
 
-// Preprocess transaction data for the model
+// Format transactions for analysis
 const preprocessTransactions = (transactions) => {
   console.log('Preprocessing transactions:', transactions.length);
-  // Display transaction amounts to verify data
+  // Quick check of our data
   console.log('Transaction amounts:', transactions.map(t => t.amount));
   
   return transactions.map(transaction => {
@@ -22,7 +22,7 @@ const preprocessTransactions = (transactions) => {
       console.warn('Invalid date found:', transaction.date);
     }
     
-    // Extract numeric features with reasonable defaults if data is invalid
+    // Feature array with defaults for bad data
     return [
       // Use a default of 0 if amount is NaN
       isNaN(amount) ? 0 : amount,
@@ -30,46 +30,45 @@ const preprocessTransactions = (transactions) => {
       isValidDate ? txDate.getDate() : 1,
       // Day of week (0-6) or 0 if invalid date
       isValidDate ? txDate.getDay() : 0,
-      // Calculate recency in days (normalized to 0-1 range)
+      // How recent is the transaction (0-1 range)
       isValidDate ? Math.min(1, (Date.now() - txDate.getTime()) / (1000 * 60 * 60 * 24 * 30)) : 0.5
     ];
   });
 };
 
-// Detect anomalies using a sliding window approach to maintain historical context
+// My sliding window implementation for anomaly detection
 const detectAnomaliesWithSlidingWindow = (transactions) => {
   // Sort transactions by date (oldest first)
   transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
   
   const anomalies = [];
-  const windowSize = 10; // Consider past 10 transactions for context
-  const minWindowSize = 5; // Minimum transactions needed for meaningful statistics
+  const windowSize = 10; // Look at past 10 transactions
+  const minWindowSize = 5; // Need at least 5 for good stats
   
-  // For each transaction (after we have enough context)
+  // Loop through transactions
   for (let i = minWindowSize; i < transactions.length; i++) {
     const currentTx = transactions[i];
     
-    // Look at previous transactions as context (not including current)
-    // Use as many as available up to windowSize
+    // Get previous transactions as baseline
     const availableContext = Math.min(windowSize, i);
     const contextWindow = transactions.slice(i - availableContext, i);
     const contextAmounts = contextWindow.map(t => parseFloat(t.amount));
     
-    // Calculate statistics based on previous transactions only
+    // Get average and standard deviation
     const mean = contextAmounts.reduce((sum, val) => sum + val, 0) / contextAmounts.length;
     const stdDev = Math.sqrt(
       contextAmounts.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / contextAmounts.length
     );
     
-    // Calculate threshold based on historical context
-    const threshold = mean + 2.5 * stdDev; // Using 2.5 standard deviations instead of 2
+    // Anything beyond 2.5 standard deviations is suspicious
+    const threshold = mean + 2.5 * stdDev;
     
-    // Check if current transaction exceeds historical threshold
+    // Check if current transaction is unusual
     const currentAmount = parseFloat(currentTx.amount);
     if (currentAmount > threshold) {
       const score = (currentAmount - mean) / stdDev;
       
-      // Generate reason based on how anomalous it is
+      // Create a message explaining the anomaly
       let reason;
       if (score > 5) {
         reason = `This expense of $${currentAmount.toFixed(2)} is extremely high compared to your typical ${currentTx.categoryName || ''} spending of around $${mean.toFixed(2)}.`;
@@ -90,19 +89,19 @@ const detectAnomaliesWithSlidingWindow = (transactions) => {
   return anomalies;
 };
 
-// Train model and detect anomalies within a specific category
+// Find unusual transactions in a specific category
 const detectAnomaliesForCategory = async (userId, categoryId) => {
   try {
     console.log(`Starting anomaly detection for category: ${categoryId}, user: ${userId}`);
     
-    // Fetch transactions for this user and category
+    // Get the user's transactions
     const snapshot = await db
       .collection('users')
       .doc(userId)
       .collection('transactions')
       .where('type', '==', 'expense')
       .where('category', '==', categoryId)
-      .orderBy('date', 'asc') // Order by date (oldest first)
+      .orderBy('date', 'asc') // Oldest first
       .get();
     
     const transactions = [];
@@ -115,7 +114,7 @@ const detectAnomaliesForCategory = async (userId, categoryId) => {
     
     console.log(`Found ${transactions.length} transactions for category ${categoryId}`);
     
-    // Need minimum number of transactions for meaningful analysis
+    // Check if we have enough data
     if (transactions.length < 5) {
       console.log(`Not enough transactions for category ${categoryId} (${transactions.length}/5)`);
       return { 
@@ -126,27 +125,25 @@ const detectAnomaliesForCategory = async (userId, categoryId) => {
     }
     
     try {
-      // First try the ML approach with Isolation Forest
-      // Preprocess data
+      // Try the ML approach first
       const features = preprocessTransactions(transactions);
       console.log('First two feature sets:', features.slice(0, 2));
       
-      // Configure and train the isolation forest model
+      // Setup isolation forest
       const isolationForest = new IsolationForest({
         nEstimators: 100,
         maxSamples: 'auto',
-        contamination: 0.1, // Expected fraction of anomalies
+        contamination: 0.1, // Expect about 10% to be unusual
         maxFeatures: features[0].length
       });
       
       console.log('Training isolation forest model...');
-      // Train the model
       isolationForest.fit(features);
       
-      // Get anomaly scores
+      // Get the scores
       const scores = isolationForest.scores(features);
       
-      // Check if any scores are NaN
+      // Double-check for errors
       if (scores.some(score => isNaN(score))) {
         throw new Error("Invalid scores generated by isolation forest");
       }
@@ -155,24 +152,24 @@ const detectAnomaliesForCategory = async (userId, categoryId) => {
         Math.min(...scores), 'to', Math.max(...scores),
         'Threshold:', -0.3);
       
-      // Add scores to transactions and identify anomalies
+      // Tag transactions with their scores
       const scoredTransactions = transactions.map((transaction, index) => ({
         ...transaction,
         anomalyScore: scores[index]
       }));
       
-      // Extract anomalies (more negative scores are more anomalous)
+      // Pull out the unusual ones
       const anomalies = scoredTransactions
-        .filter(t => t.anomalyScore < -0.3) // Adjusted threshold for more sensitivity
+        .filter(t => t.anomalyScore < -0.3) // Threshold I tweaked through testing
         .sort((a, b) => a.anomalyScore - b.anomalyScore);
       
       console.log(`Found ${anomalies.length} ML anomalies in category ${categoryId}`);
       
-      // Add context to each anomaly
+      // Add explanations to the anomalies
       anomalies.forEach(anomaly => {
         anomaly.reason = generateAnomalyReason(anomaly, transactions);
         
-        // Make sure categoryName is set for displaying in UI
+        // Make sure we have category names for display
         if (!anomaly.categoryName && anomaly.category) {
           const categoryObj = transactions.find(t => t.categoryName && t.category === categoryId);
           if (categoryObj) {
@@ -187,7 +184,7 @@ const detectAnomaliesForCategory = async (userId, categoryId) => {
     } catch (error) {
       console.error('Error in isolation forest processing:', error.message);
       
-      // Fallback to sliding window anomaly detection
+      // Fall back to my simpler method if ML fails
       console.log('Falling back to sliding window detection method');
       
       // Use sliding window approach
@@ -202,7 +199,7 @@ const detectAnomaliesForCategory = async (userId, categoryId) => {
           date: new Date(a.date).toISOString().split('T')[0]
         })));
         
-        // Make sure categoryName is set for displaying in UI
+        // Fill in missing category names
         anomalies.forEach(anomaly => {
           if (!anomaly.categoryName && anomaly.category) {
             const categoryObj = transactions.find(t => t.categoryName && t.category === categoryId);
@@ -227,14 +224,14 @@ const detectAnomaliesForCategory = async (userId, categoryId) => {
   }
 };
 
-// Generate human-readable reason for the anomaly
+// Create a description for an anomaly
 const generateAnomalyReason = (anomaly, allTransactions) => {
-  // Calculate category statistics
+  // Get some basic stats
   const amounts = allTransactions.map(t => parseFloat(t.amount));
   const avgAmount = amounts.reduce((sum, val) => sum + val, 0) / amounts.length;
   const maxAmount = Math.max(...amounts);
   
-  // Calculate how much this anomaly deviates
+  // How unusual is this transaction?
   const amountRatio = anomaly.amount / avgAmount;
   
   if (amountRatio > 3) {
@@ -244,19 +241,19 @@ const generateAnomalyReason = (anomaly, allTransactions) => {
   } else if (anomaly.amount === maxAmount) {
     return `This is your largest recorded expense in the ${anomaly.categoryName || ''} category.`;
   } else {
-    // Unusual timing or pattern
+    // Probably unusual timing
     const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const day = weekday[new Date(anomaly.date).getDay()];
     return `This ${anomaly.categoryName || ''} expense has an unusual pattern (timing, amount, or frequency) compared to your typical spending.`;
   }
 };
 
-// Detect anomalies across all categories for a user
+// Find all anomalies for a user
 const detectAnomaliesForUser = async (userId) => {
   try {
     console.log('Starting anomaly detection for user:', userId);
     
-    // First, get all categories this user has transactions for
+    // Get all the categories used by this user
     const transactionsSnapshot = await db
       .collection('users')
       .doc(userId)
@@ -267,7 +264,7 @@ const detectAnomaliesForUser = async (userId) => {
     console.log('Found expenses:', transactionsSnapshot.size);
     
     if (transactionsSnapshot.size === 0) {
-      return []; // Return early if no transactions
+      return []; // Nothing to analyze
     }
     
     const categories = new Set();
@@ -281,10 +278,10 @@ const detectAnomaliesForUser = async (userId) => {
     console.log('Found unique categories:', Array.from(categories));
     
     if (categories.size === 0) {
-      return []; // Return early if no categories
+      return []; // No categories to work with
     }
     
-    // Run anomaly detection for each category
+    // Process each category in parallel
     const categoryPromises = Array.from(categories).map(categoryId => {
       console.log('Processing category:', categoryId);
       return detectAnomaliesForCategory(userId, categoryId);
@@ -296,18 +293,18 @@ const detectAnomaliesForUser = async (userId) => {
       anomalyCount: r.anomalies?.length || 0
     })));
     
-    // Combine results - sort by date (newest first) and then by anomaly score
+    // Sort by date then by severity
     const allAnomalies = results
       .flatMap(result => result.anomalies)
       .sort((a, b) => {
-        // First sort by date (newest first)
+        // First by date (newest first)
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
         if (dateB.getTime() !== dateA.getTime()) {
           return dateB.getTime() - dateA.getTime();
         }
         
-        // If dates are equal, sort by anomaly score (most anomalous first)
+        // Then by severity
         return Math.abs(b.anomalyScore) - Math.abs(a.anomalyScore);
       });
     
@@ -319,24 +316,24 @@ const detectAnomaliesForUser = async (userId) => {
   }
 };
 
-// Run anomaly detection on a single transaction to check if it's anomalous
+// Check if a single transaction is unusual
 const checkTransactionForAnomaly = async (userId, transaction) => {
   try {
     const categoryId = transaction.category;
     
-    // Get past transactions in this category
+    // Get past transactions for context
     const snapshot = await db
       .collection('users')
       .doc(userId)
       .collection('transactions')
       .where('type', '==', 'expense')
       .where('category', '==', categoryId)
-      .orderBy('date', 'asc') // Order by date (oldest first)
+      .orderBy('date', 'asc')
       .get();
     
     const pastTransactions = [];
     snapshot.forEach(doc => {
-      // Don't include the current transaction if it's already in the database
+      // Skip the current transaction if it's in the database
       if (doc.id !== transaction.id) {
         pastTransactions.push({
           id: doc.id,
@@ -345,22 +342,22 @@ const checkTransactionForAnomaly = async (userId, transaction) => {
       }
     });
     
-    // Need minimum number of transactions for meaningful analysis
+    // Need enough history to compare against
     if (pastTransactions.length < 5) {
-      return null; // Not enough data to determine if it's an anomaly
+      return null; // Can't tell if it's unusual yet
     }
     
-    // Add the current transaction to the end
+    // Create combined list with current transaction at end
     const allTransactions = [...pastTransactions, transaction];
     
-    // Calculate statistics based on previous transactions only
+    // Calculate stats from history
     const contextAmounts = pastTransactions.map(t => parseFloat(t.amount));
     const mean = contextAmounts.reduce((sum, val) => sum + val, 0) / contextAmounts.length;
     const stdDev = Math.sqrt(
       contextAmounts.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / contextAmounts.length
     );
     
-    // Calculate threshold
+    // Set threshold for anomaly detection
     const threshold = mean + 2.5 * stdDev;
     
     // Check if current transaction exceeds threshold
@@ -368,7 +365,7 @@ const checkTransactionForAnomaly = async (userId, transaction) => {
     if (currentAmount > threshold) {
       const score = (currentAmount - mean) / stdDev;
       
-      // Generate reason
+      // Create appropriate message based on severity
       let reason;
       if (score > 5) {
         reason = `This expense of $${currentAmount.toFixed(2)} is extremely high compared to your typical ${transaction.categoryName || ''} spending of around $${mean.toFixed(2)}.`;
