@@ -1,28 +1,28 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   List,
   ListItem,
   ListItemText,
-  IconButton,
-  TextField,
-  Button,
   Box,
-  Chip,
   Typography,
   Alert
 } from '@mui/material';
-import { Delete, Add, Edit } from '@mui/icons-material';
+import { Delete, Add } from '@mui/icons-material';
 import { db } from '../../config/firebase';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
+import { 
+  AccessibleDialog,
+  AccessibleTextField,
+  AccessibleButton,
+  AccessibleIconButton
+} from '../../utils/accessibilityHelpers';
 
 const CategoryManager = ({ open, onClose, userId }) => {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState('');
   const [error, setError] = useState('');
-  const [editingCategory, setEditingCategory] = useState(null);
 
   const fetchCategories = useCallback(async () => {
     if (!userId) return;
@@ -122,11 +122,13 @@ const CategoryManager = ({ open, onClose, userId }) => {
   };
 
   return (
-    <Dialog 
+    <AccessibleDialog 
       open={open} 
       onClose={onClose} 
       maxWidth="sm" 
       fullWidth
+      id="category-manager-dialog"
+      title="Manage Categories"
       sx={{ '& .MuiDialog-paper': { borderRadius: 2 } }}
     >
       <DialogTitle sx={{ bgcolor: '#1a237e', color: 'white' }}>
@@ -138,7 +140,9 @@ const CategoryManager = ({ open, onClose, userId }) => {
         )}
         
         <Box sx={{ mb: 2, display: 'flex', gap: 1, mt: 2 }}>
-          <TextField
+          <AccessibleTextField
+            id="new-category-name"
+            label="New Category Name"
             fullWidth
             size="small"
             value={newCategory}
@@ -146,7 +150,7 @@ const CategoryManager = ({ open, onClose, userId }) => {
             placeholder="New category name"
             sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1 } }}
           />
-          <Button
+          <AccessibleButton
             variant="contained"
             startIcon={<Add />}
             onClick={handleAddCategory}
@@ -154,9 +158,11 @@ const CategoryManager = ({ open, onClose, userId }) => {
               bgcolor: '#1a237e',
               '&:hover': { bgcolor: '#283593' }
             }}
+            id="add-category-button"
+            label="Add Category"
           >
             Add
-          </Button>
+          </AccessibleButton>
         </Box>
         
         <List>
@@ -172,28 +178,31 @@ const CategoryManager = ({ open, onClose, userId }) => {
               <ListItemText 
                 primary={category.name}
                 secondary={
-                  <TextField
+                  <AccessibleTextField
+                    id={`category-budget-${category.id}`}
+                    label="Monthly Budget"
                     size="small"
                     type="number"
-                    label="Monthly Budget"
                     value={category.budget}
                     onChange={(e) => handleUpdateCategory(category.id, e.target.value)}
                     sx={{ mt: 1 }}
                   />
                 }
               />
-              <IconButton 
+              <AccessibleIconButton 
                 edge="end" 
                 onClick={() => handleDeleteCategory(category.id)}
                 sx={{ color: '#d32f2f' }}
+                id={`delete-category-${category.id}`}
+                label={`Delete ${category.name} category`}
               >
                 <Delete />
-              </IconButton>
+              </AccessibleIconButton>
             </ListItem>
           ))}
         </List>
       </DialogContent>
-    </Dialog>
+    </AccessibleDialog>
   );
 };
 

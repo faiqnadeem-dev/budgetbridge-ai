@@ -1,0 +1,41 @@
+@startuml Authentication Flow
+skinparam activityDiamondBackgroundColor LightBlue
+skinparam ActivityBackgroundColor WhiteSmoke
+
+title Finance App - Authentication Flow
+
+start
+:User visits application;
+
+if (User authenticated?) then (yes)
+  :Retrieve user profile;
+  :Redirect to Dashboard;
+else (no)
+  :Display Home Page;
+  
+  if (User action?) then (Sign Up)
+    :Display registration form;
+    :User enters details;
+    :Validate input;
+    :Create account;
+  else (Sign In)
+    :Display login form;
+    :User enters credentials;
+    :Validate credentials;
+  endif
+  
+  if (Authentication successful?) then (yes)
+    :Create user session;
+    :Redirect to Dashboard;
+  else (no)
+    :Display error message;
+    :Return to login form;
+    stop
+  endif
+endif
+
+:Load user data;
+:Initialize application;
+stop
+
+@enduml 

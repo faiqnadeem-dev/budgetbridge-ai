@@ -1,75 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Typography, Box, Paper, CircularProgress } from '@mui/material';
-import { useAuth } from '../context/AuthContext';
-import AnomalyDashboard from '../components/anomaly/AnomalyDashboard';
-import { db } from '../config/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Container,
+  Typography,
+  CircularProgress,
+  Divider,
+} from "@mui/material";
+import AnomalyDashboard from "../components/anomaly/AnomalyDashboard";
+import { useFirebaseUser } from "../context/ClerkFirebaseBridge";
+import { db } from "../config/firebase";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 const AnomalyPage = () => {
-  const { currentUser } = useAuth();
+  // Get authentication state from ClerkFirebaseBridge
+  const { currentUser, loading: authLoading, token } = useFirebaseUser();
+  const { isLoaded: isClerkLoaded, userId } = useAuth();
+  const { isLoaded: isUserLoaded } = useUser();
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Get categories when user is loaded
   useEffect(() => {
     const fetchCategories = async () => {
+      if (!currentUser && !userId) {
+        return;
+      }
+
       try {
-        if (currentUser) {
-          const userDocRef = doc(db, 'users', currentUser.uid);
-          const userDoc = await getDoc(userDocRef);
-          
-          if (userDoc.exists() && userDoc.data().categories) {
-            setCategories(userDoc.data().categories);
-          } else {
-            // Default categories if none exist
-            setCategories([
-              { id: 'food', name: 'Food & Dining' },
-              { id: 'transport', name: 'Transportation' },
-              { id: 'utilities', name: 'Bills & Utilities' },
-              { id: 'entertainment', name: 'Entertainment' },
-              { id: 'shopping', name: 'Shopping' },
-              { id: 'other', name: 'Other' }
-            ]);
-          }
+        setLoading(true);
+        let fetchedCategories = [];
+
+        const userRef = doc(db, "users", currentUser?.uid || userId);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          fetchedCategories = userData.categories || [];
         }
-        setLoading(false);
+
+        setCategories(fetchedCategories);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchCategories();
-  }, [currentUser]);
+  }, [currentUser, userId]);
 
-  if (loading) {
+  // Show loading if both auth and categories are loading
+  if (authLoading && loading) {
     return (
-      <Box 
-        sx={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          minHeight: '80vh' 
-        }}
-      >
-        <CircularProgress />
-      </Box>
+      <Container>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mt: 5,
+          }}
+        >
+          <CircularProgress />
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            Loading anomaly detection...
+          </Typography>
+        </Box>
+      </Container>
     );
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
-      <Typography 
-        variant="h4" 
-        sx={{ 
-          mb: 4, 
-          fontWeight: 600,
-          color: '#1a237e'
-        }}
-      >
-        AI Anomaly Detection
-      </Typography>
-      
-      <AnomalyDashboard categories={categories} />
+    <Container maxWidth="lg">
+      <Box sx={{ mt: 4, mb: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Anomaly Detection
+        </Typography>
+        <Typography variant="body1" paragraph>
+          This page shows potential anomalies detected in your spending habits.
+          Our machine learning algorithm analyzes your transactions to identify
+          unusual patterns.
+        </Typography>
+        <Divider sx={{ mb: 4 }} />
+
+        <AnomalyDashboard categories={categories} />
+      </Box>
     </Container>
   );
 };

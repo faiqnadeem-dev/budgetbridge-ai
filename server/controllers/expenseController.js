@@ -3,7 +3,9 @@ const { checkTransactionForAnomaly } = require('../ml/anomalyDetection');
 
 const addExpense = async (req, res) => {
     try {
-        const { amount, categoryId, categoryName, description, date, userId } = req.body;
+        // Use req.user from Clerk middleware instead of Firebase auth
+        const userId = req.user.uid;
+        const { amount, categoryId, categoryName, description, date } = req.body;
         
         const expenseData = {
             amount: Number(amount),
@@ -55,7 +57,9 @@ const addExpense = async (req, res) => {
 
 const getExpenses = async (req, res) => {
     try {
-        const userId = req.query.userId;
+        // Use req.user from Clerk middleware instead of query param
+        const userId = req.user.uid;
+        
         const expensesSnapshot = await db.collection('expenses')
             .where('userId', '==', userId)
             .orderBy('createdAt', 'desc')

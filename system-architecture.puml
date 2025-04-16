@@ -1,0 +1,88 @@
+@startuml System Architecture
+
+skinparam packageStyle rectangle
+skinparam backgroundColor transparent
+skinparam roundCorner 10
+skinparam ArrowColor #333333
+skinparam ComponentBorderColor #666666
+
+package "Frontend Application" as frontend #4285F4 {
+  [React App] as react
+  [React Router] as router
+
+  package "Context Providers" as contexts {
+    [Auth Context] as authContext
+  }
+
+  package "Components" as components {
+    [UI Components] as uiComponents
+    [Charts (Nivo/Recharts)] as charts
+  }
+
+  package "Services" as frontendServices {
+    [API Client] as apiClient
+  }
+}
+
+package "Backend Server" as backend #0F9D58 {
+  [Express Server] as express
+  
+  package "Routes" as routes {
+    [Expense Routes] as expenseRoutes
+    [Anomaly Routes] as anomalyRoutes
+  }
+  
+  package "Controllers" as controllers {
+    [Expense Controller] as expenseController
+  }
+  
+  package "Middleware" as middleware {
+    [Auth Middleware] as authMiddleware
+    [Logger] as loggerMiddleware
+  }
+}
+
+package "ML Service" as mlService #F4B400 {
+  [FastAPI Server] as fastapi
+  
+  package "ML Modules" as mlModules {
+    [Anomaly Detection] as anomalyDetection
+    [Models] as mlModels
+  }
+  
+  package "Data Processing" as dataProcessing {
+    [User Feedback Processing] as feedbackProcessor
+  }
+}
+
+cloud "External Services" as externalServices {
+  [Clerk Authentication] as clerkAuth #9D28B2
+}
+
+database "Storage" as storage #DB4437 {
+  [User Feedback Data] as feedbackData
+  [Alert Configurations] as alertConfig
+}
+
+' Connections
+react --> router : "uses"
+react --> contexts : "uses"
+react --> components : "uses"
+react --> frontendServices : "uses"
+charts --> uiComponents : "renders in"
+apiClient --> express : "HTTP requests"
+authContext --> clerkAuth : "authenticates"
+
+express --> routes : "defines"
+routes --> controllers : "uses"
+express --> middleware : "uses"
+anomalyRoutes --> mlService : "forwards requests"
+
+fastapi --> mlModules : "uses"
+fastapi --> dataProcessing : "uses"
+mlModules --> storage : "reads/writes"
+dataProcessing --> storage : "reads/writes"
+
+authMiddleware --> clerkAuth : "verifies tokens"
+
+@enduml 

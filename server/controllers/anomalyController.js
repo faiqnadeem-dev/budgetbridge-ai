@@ -3,7 +3,7 @@ const { detectAnomaliesForUser, detectAnomaliesForCategory } = require('../ml/an
 const getUserAnomalies = async (req, res) => {
     try {
         console.log('Received request for getUserAnomalies');
-        console.log('User ID from token:', req.user.uid);
+        console.log('User ID from Clerk token:', req.user.uid);
         
         const userId = req.user.uid;
         const anomalies = await detectAnomaliesForUser(userId);
@@ -23,7 +23,7 @@ const getUserAnomalies = async (req, res) => {
 const getCategoryAnomalies = async (req, res) => {
     try {
         console.log('Received request for getCategoryAnomalies');
-        console.log('User ID from token:', req.user.uid);
+        console.log('User ID from Clerk token:', req.user.uid);
         console.log('Category ID from params:', req.params.categoryId);
         
         const userId = req.user.uid;

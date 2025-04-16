@@ -1,0 +1,3 @@
+@echo off
+echo Running expense service tests with coverage...
+npx jest __tests__/addExpense.test.js --coverage 

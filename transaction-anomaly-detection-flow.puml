@@ -1,0 +1,16 @@
+@startuml System Architecture
+
+' Define main components
+rectangle "Frontend" as Front #LightBlue
+rectangle "Backend Server" as Back #LightGreen
+rectangle "ML Service" as ML #LightPink
+database "Database" as DB #LightGray
+
+' Define relationships with clear direction
+Front -right-> Back : HTTP/REST
+Back -down-> DB : Store/Retrieve Data
+Back -right-> ML : Request Analysis
+ML -left-> Back : Return Results
+Back -left-> Front : Send Response
+
+@enduml 

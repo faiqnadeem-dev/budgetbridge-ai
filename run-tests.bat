@@ -1,0 +1,3 @@
+@echo off
+echo Running expense service tests...
+npx jest __tests__/addExpense.test.js 

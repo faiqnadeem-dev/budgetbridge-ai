@@ -1,0 +1,104 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\Faiq\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.2.0
+2 info using node@v22.14.0
+3 silly config load:file:C:\Users\Faiq\AppData\Roaming\npm\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\Faiq\AppData\Local\Microsoft\TypeScript\5.7\.npmrc
+5 silly config load:file:C:\Users\Faiq\.npmrc
+6 silly config load:file:C:\Users\Faiq\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install @types/babel__preset-env@ts5.7
+8 verbose argv "install" "--ignore-scripts" "@types/babel__preset-env@ts5.7" "--save-dev" "--user-agent" "typesInstaller/5.7.2"
+9 verbose logfile logs-max:10 dir:E:\myapp\npm-cache\_logs\2025-04-14T07_55_07_465Z-
+10 verbose logfile E:\myapp\npm-cache\_logs\2025-04-14T07_55_07_465Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+13 silly logfile done cleaning log files
+14 silly packumentCache corgi:https://registry.npmjs.org/@types%2fbabel__preset-env cache-miss
+15 http fetch GET 200 https://registry.npmjs.org/@types%2fbabel__preset-env 216ms (cache miss)
+16 silly packumentCache corgi:https://registry.npmjs.org/@types%2fbabel__preset-env set size:undefined disposed:false
+17 silly idealTree buildDeps
+18 silly fetch manifest @types/babel__preset-env@7.10.0
+19 silly packumentCache full:https://registry.npmjs.org/@types%2fbabel__preset-env cache-miss
+20 http fetch GET 200 https://registry.npmjs.org/@types%2fbabel__preset-env 47ms (cache miss)
+21 silly packumentCache full:https://registry.npmjs.org/@types%2fbabel__preset-env set size:undefined disposed:false
+22 silly placeDep ROOT @types/babel__preset-env@7.10.0 OK for:  want: 7.10.0
+23 silly reify moves {}
+24 silly audit bulk request {
+24 silly audit   '@tweenjs/tween.js': [ '23.1.3' ],
+24 silly audit   '@types/body-parser': [ '1.19.5' ],
+24 silly audit   '@types/canvas-confetti': [ '1.9.0' ],
+24 silly audit   '@types/connect': [ '3.4.38' ],
+24 silly audit   '@types/cors': [ '2.8.17' ],
+24 silly audit   '@types/d3-path': [ '3.1.0', '1.0.11' ],
+24 silly audit   '@types/d3-scale': [ '4.0.8' ],
+24 silly audit   '@types/d3-shape': [ '3.1.6', '1.3.12' ],
+24 silly audit   '@types/d3-time': [ '3.0.4' ],
+24 silly audit   '@types/express': [ '5.0.1' ],
+24 silly audit   '@types/express-serve-static-core': [ '5.0.2' ],
+24 silly audit   '@types/http-errors': [ '2.0.4' ],
+24 silly audit   '@types/json-schema': [ '7.0.15' ],
+24 silly audit   '@types/jsonwebtoken': [ '9.0.9' ],
+24 silly audit   '@types/lodash': [ '4.17.13' ],
+24 silly audit   '@types/mime': [ '1.3.5' ],
+24 silly audit   '@types/ms': [ '2.1.0' ],
+24 silly audit   '@types/node': [ '22.10.2' ],
+24 silly audit   '@types/node-fetch': [ '2.6.12' ],
+24 silly audit   '@types/postcss-import': [ '14.0.3' ],
+24 silly audit   '@types/qs': [ '6.9.17' ],
+24 silly audit   '@types/range-parser': [ '1.2.7' ],
+24 silly audit   '@types/react': [ '19.1.1' ],
+24 silly audit   '@types/react-dom': [ '19.1.2' ],
+24 silly audit   '@types/recharts': [ '1.8.29' ],
+24 silly audit   '@types/send': [ '0.17.4' ],
+24 silly audit   '@types/serve-static': [ '1.15.7' ],
+24 silly audit   '@types/stats.js': [ '0.17.3' ],
+24 silly audit   '@types/stylis': [ '4.2.7' ],
+24 silly audit   '@types/three': [ '0.175.0' ],
+24 silly audit   '@types/ua-parser-js': [ '0.7.39' ],
+24 silly audit   '@types/uuid': [ '10.0.0' ],
+24 silly audit   '@types/webidl-conversions': [ '7.0.3' ],
+24 silly audit   '@types/webxr': [ '0.5.21' ],
+24 silly audit   '@types/whatwg-url': [ '13.0.0' ],
+24 silly audit   '@webgpu/types': [ '0.1.60' ],
+24 silly audit   asynckit: [ '0.4.0' ],
+24 silly audit   'call-bind-apply-helpers': [ '1.0.2' ],
+24 silly audit   'combined-stream': [ '1.0.8' ],
+24 silly audit   csstype: [ '3.1.3' ],
+24 silly audit   'delayed-stream': [ '1.0.0' ],
+24 silly audit   'dunder-proto': [ '1.0.1' ],
+24 silly audit   'es-define-property': [ '1.0.1' ],
+24 silly audit   'es-errors': [ '1.3.0' ],
+24 silly audit   'es-object-atoms': [ '1.1.1' ],
+24 silly audit   'es-set-tostringtag': [ '2.1.0' ],
+24 silly audit   fflate: [ '0.8.2' ],
+24 silly audit   'form-data': [ '4.0.2' ],
+24 silly audit   'function-bind': [ '1.1.2' ],
+24 silly audit   'get-intrinsic': [ '1.3.0' ],
+24 silly audit   'get-proto': [ '1.0.1' ],
+24 silly audit   gopd: [ '1.2.0' ],
+24 silly audit   'has-symbols': [ '1.1.0' ],
+24 silly audit   'has-tostringtag': [ '1.0.2' ],
+24 silly audit   hasown: [ '2.0.2' ],
+24 silly audit   'math-intrinsics': [ '1.1.0' ],
+24 silly audit   meshoptimizer: [ '0.18.1' ],
+24 silly audit   'mime-db': [ '1.52.0' ],
+24 silly audit   'mime-types': [ '2.1.35' ],
+24 silly audit   nanoid: [ '3.3.11' ],
+24 silly audit   picocolors: [ '1.1.1' ],
+24 silly audit   postcss: [ '8.5.3' ],
+24 silly audit   'source-map-js': [ '1.2.1' ],
+24 silly audit   'types-registry': [ '0.1.715' ],
+24 silly audit   'undici-types': [ '6.20.0' ],
+24 silly audit   '@types/babel__preset-env': [ '7.10.0' ]
+24 silly audit }
+25 http cache @types/babel__preset-env@https://registry.npmjs.org/@types/babel__preset-env/-/babel__preset-env-7.10.0.tgz 0ms (cache hit)
+26 silly tarball no local data for @types/babel__preset-env@https://registry.npmjs.org/@types/babel__preset-env/-/babel__preset-env-7.10.0.tgz. Extracting by manifest.
+27 http fetch GET 200 https://registry.npmjs.org/@types/babel__preset-env/-/babel__preset-env-7.10.0.tgz 127ms (cache miss)
+28 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 198ms
+29 silly audit report {}
+30 silly ADD node_modules/@types/babel__preset-env
+31 verbose cwd C:\Users\Faiq\AppData\Local\Microsoft\TypeScript\5.7
+32 verbose os Windows_NT 10.0.19045
+33 verbose node v22.14.0
+34 verbose npm  v11.2.0
+35 verbose exit 0
+36 info ok

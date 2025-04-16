@@ -3,14 +3,14 @@ import { Modal, Box, Typography, TextField, Button } from '@mui/material';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
-const WelcomeModal = ({ open, onClose, currentUser, onNameSet }) => {
+const WelcomeModal = ({ open, onClose, user, onNameSet }) => {
     const [newUserName, setNewUserName] = React.useState('');
 
     const handleSubmit = async () => {
         if (!newUserName.trim()) return;
         
         try {
-            await setDoc(doc(db, 'users', currentUser.uid), {
+            await setDoc(doc(db, 'users', user.id), {
                 name: newUserName,
                 monthlyBudget: 0,
                 categories: [
@@ -55,6 +55,7 @@ const WelcomeModal = ({ open, onClose, currentUser, onNameSet }) => {
                     What would you like us to call you?
                 </Typography>
                 <TextField
+                    id="welcome-user-name"
                     fullWidth
                     label="Your Name"
                     value={newUserName}

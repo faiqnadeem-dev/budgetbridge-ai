@@ -1,0 +1,180 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\Faiq\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.2.0
+2 info using node@v22.14.0
+3 silly config load:file:C:\Users\Faiq\AppData\Roaming\npm\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\Faiq\AppData\Local\Microsoft\TypeScript\5.7\.npmrc
+5 silly config load:file:C:\Users\Faiq\.npmrc
+6 silly config load:file:C:\Users\Faiq\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install @types/canvas-confetti@ts5.7 @types/jsonwebtoken@ts5.7 @types/postcss-import@ts5.7 @types/react@ts5.7 @types/react-dom@ts5.7 @types/stats.js@ts5.7 @types/stylis@ts5.7 @types/three@ts5.7 @types/ua-parser-js@ts5.7 @types/uuid@ts5.7
+8 verbose argv "install" "--ignore-scripts" "@types/canvas-confetti@ts5.7" "@types/jsonwebtoken@ts5.7" "@types/postcss-import@ts5.7" "@types/react@ts5.7" "@types/react-dom@ts5.7" "@types/stats.js@ts5.7" "@types/stylis@ts5.7" "@types/three@ts5.7" "@types/ua-parser-js@ts5.7" "@types/uuid@ts5.7" "--save-dev" "--user-agent" "typesInstaller/5.7.2"
+9 verbose logfile logs-max:10 dir:E:\myapp\npm-cache\_logs\2025-04-12T00_39_13_307Z-
+10 verbose logfile E:\myapp\npm-cache\_logs\2025-04-12T00_39_13_307Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+13 silly logfile done cleaning log files
+14 silly packumentCache corgi:https://registry.npmjs.org/@types%2fcanvas-confetti cache-miss
+15 silly packumentCache corgi:https://registry.npmjs.org/@types%2fjsonwebtoken cache-miss
+16 silly packumentCache corgi:https://registry.npmjs.org/@types%2fpostcss-import cache-miss
+17 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact cache-miss
+18 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact-dom cache-miss
+19 silly packumentCache corgi:https://registry.npmjs.org/@types%2fstats.js cache-miss
+20 silly packumentCache corgi:https://registry.npmjs.org/@types%2fstylis cache-miss
+21 silly packumentCache corgi:https://registry.npmjs.org/@types%2fthree cache-miss
+22 silly packumentCache corgi:https://registry.npmjs.org/@types%2fua-parser-js cache-miss
+23 silly packumentCache corgi:https://registry.npmjs.org/@types%2fuuid cache-miss
+24 http fetch GET 200 https://registry.npmjs.org/@types%2fjsonwebtoken 555ms (cache updated)
+25 silly packumentCache corgi:https://registry.npmjs.org/@types%2fjsonwebtoken set size:undefined disposed:false
+26 http fetch GET 200 https://registry.npmjs.org/@types%2freact-dom 575ms (cache updated)
+27 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact-dom set size:undefined disposed:false
+28 http fetch GET 200 https://registry.npmjs.org/@types%2fua-parser-js 918ms (cache updated)
+29 silly packumentCache corgi:https://registry.npmjs.org/@types%2fua-parser-js set size:undefined disposed:false
+30 http fetch GET 200 https://registry.npmjs.org/@types%2fuuid 970ms (cache updated)
+31 silly packumentCache corgi:https://registry.npmjs.org/@types%2fuuid set size:undefined disposed:false
+32 http fetch GET 200 https://registry.npmjs.org/@types%2fcanvas-confetti 1222ms (cache updated)
+33 silly packumentCache corgi:https://registry.npmjs.org/@types%2fcanvas-confetti set size:undefined disposed:false
+34 http fetch GET 200 https://registry.npmjs.org/@types%2fthree 1246ms (cache updated)
+35 silly packumentCache corgi:https://registry.npmjs.org/@types%2fthree set size:undefined disposed:false
+36 http fetch GET 200 https://registry.npmjs.org/@types%2fstats.js 1269ms (cache updated)
+37 silly packumentCache corgi:https://registry.npmjs.org/@types%2fstats.js set size:undefined disposed:false
+38 http fetch GET 200 https://registry.npmjs.org/@types%2fpostcss-import 1279ms (cache updated)
+39 silly packumentCache corgi:https://registry.npmjs.org/@types%2fpostcss-import set size:undefined disposed:false
+40 http fetch GET 200 https://registry.npmjs.org/@types%2fstylis 1287ms (cache updated)
+41 silly packumentCache corgi:https://registry.npmjs.org/@types%2fstylis set size:undefined disposed:false
+42 http fetch GET 200 https://registry.npmjs.org/@types%2freact 1658ms (cache updated)
+43 silly packumentCache corgi:https://registry.npmjs.org/@types%2freact set size:undefined disposed:false
+44 silly idealTree buildDeps
+45 silly fetch manifest @types/canvas-confetti@1.9.0
+46 silly packumentCache full:https://registry.npmjs.org/@types%2fcanvas-confetti cache-miss
+47 http fetch GET 200 https://registry.npmjs.org/@types%2fcanvas-confetti 127ms (cache updated)
+48 silly packumentCache full:https://registry.npmjs.org/@types%2fcanvas-confetti set size:undefined disposed:false
+49 silly fetch manifest @types/jsonwebtoken@9.0.9
+50 silly packumentCache full:https://registry.npmjs.org/@types%2fjsonwebtoken cache-miss
+51 http fetch GET 200 https://registry.npmjs.org/@types%2fjsonwebtoken 104ms (cache updated)
+52 silly packumentCache full:https://registry.npmjs.org/@types%2fjsonwebtoken set size:undefined disposed:false
+53 silly fetch manifest @types/postcss-import@14.0.3
+54 silly packumentCache full:https://registry.npmjs.org/@types%2fpostcss-import cache-miss
+55 http fetch GET 200 https://registry.npmjs.org/@types%2fpostcss-import 1252ms (cache updated)
+56 silly packumentCache full:https://registry.npmjs.org/@types%2fpostcss-import set size:undefined disposed:false
+57 silly fetch manifest @types/react@19.1.1
+58 silly packumentCache full:https://registry.npmjs.org/@types%2freact cache-miss
+59 http fetch GET 200 https://registry.npmjs.org/@types%2freact 875ms (cache updated)
+60 silly packumentCache full:https://registry.npmjs.org/@types%2freact set size:undefined disposed:false
+61 silly fetch manifest @types/react-dom@19.1.2
+62 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom cache-miss
+63 http fetch GET 200 https://registry.npmjs.org/@types%2freact-dom 321ms (cache updated)
+64 silly packumentCache full:https://registry.npmjs.org/@types%2freact-dom set size:undefined disposed:false
+65 silly fetch manifest @types/stats.js@0.17.3
+66 silly packumentCache full:https://registry.npmjs.org/@types%2fstats.js cache-miss
+67 http fetch GET 200 https://registry.npmjs.org/@types%2fstats.js 185ms (cache updated)
+68 silly packumentCache full:https://registry.npmjs.org/@types%2fstats.js set size:undefined disposed:false
+69 silly fetch manifest @types/stylis@4.2.7
+70 silly packumentCache full:https://registry.npmjs.org/@types%2fstylis cache-miss
+71 http fetch GET 200 https://registry.npmjs.org/@types%2fstylis 119ms (cache updated)
+72 silly packumentCache full:https://registry.npmjs.org/@types%2fstylis set size:undefined disposed:false
+73 silly fetch manifest @types/three@0.175.0
+74 silly packumentCache full:https://registry.npmjs.org/@types%2fthree cache-miss
+75 http fetch GET 200 https://registry.npmjs.org/@types%2fthree 367ms (cache updated)
+76 silly packumentCache full:https://registry.npmjs.org/@types%2fthree set size:undefined disposed:false
+77 silly fetch manifest @types/ua-parser-js@0.7.39
+78 silly packumentCache full:https://registry.npmjs.org/@types%2fua-parser-js cache-miss
+79 http fetch GET 200 https://registry.npmjs.org/@types%2fua-parser-js 124ms (cache updated)
+80 silly packumentCache full:https://registry.npmjs.org/@types%2fua-parser-js set size:undefined disposed:false
+81 silly fetch manifest @types/uuid@10.0.0
+82 silly packumentCache full:https://registry.npmjs.org/@types%2fuuid cache-miss
+83 http fetch GET 200 https://registry.npmjs.org/@types%2fuuid 178ms (cache updated)
+84 silly packumentCache full:https://registry.npmjs.org/@types%2fuuid set size:undefined disposed:false
+85 silly placeDep ROOT @types/canvas-confetti@1.9.0 REPLACE for:  want: 1.9.0
+86 silly placeDep ROOT @types/jsonwebtoken@9.0.9 REPLACE for:  want: 9.0.9
+87 silly placeDep ROOT @types/postcss-import@14.0.3 REPLACE for:  want: 14.0.3
+88 silly placeDep ROOT @types/react@19.1.1 REPLACE for:  want: 19.1.1
+89 silly placeDep ROOT @types/react-dom@19.1.2 REPLACE for:  want: 19.1.2
+90 silly placeDep ROOT @types/stats.js@0.17.3 REPLACE for:  want: 0.17.3
+91 silly placeDep ROOT @types/stylis@4.2.7 REPLACE for:  want: 4.2.7
+92 silly placeDep ROOT @types/three@0.175.0 REPLACE for:  want: 0.175.0
+93 silly placeDep ROOT @types/ua-parser-js@0.7.39 REPLACE for:  want: 0.7.39
+94 silly placeDep ROOT @types/uuid@10.0.0 REPLACE for:  want: 10.0.0
+95 silly reify mark retired [
+95 silly reify   'C:\\Users\\Faiq\\AppData\\Local\\Microsoft\\TypeScript\\5.7\\node_modules\\@types\\react'
+95 silly reify ]
+96 silly reify moves {
+96 silly reify   'C:\\Users\\Faiq\\AppData\\Local\\Microsoft\\TypeScript\\5.7\\node_modules\\@types\\react': 'C:\\Users\\Faiq\\AppData\\Local\\Microsoft\\TypeScript\\5.7\\node_modules\\@types\\.react-ucMonEZC'
+96 silly reify }
+97 silly audit bulk request {
+97 silly audit   '@tweenjs/tween.js': [ '23.1.3' ],
+97 silly audit   '@types/body-parser': [ '1.19.5' ],
+97 silly audit   '@types/connect': [ '3.4.38' ],
+97 silly audit   '@types/cors': [ '2.8.17' ],
+97 silly audit   '@types/d3-path': [ '3.1.0', '1.0.11' ],
+97 silly audit   '@types/d3-scale': [ '4.0.8' ],
+97 silly audit   '@types/d3-shape': [ '3.1.6', '1.3.12' ],
+97 silly audit   '@types/d3-time': [ '3.0.4' ],
+97 silly audit   '@types/express': [ '5.0.1' ],
+97 silly audit   '@types/express-serve-static-core': [ '5.0.2' ],
+97 silly audit   '@types/http-errors': [ '2.0.4' ],
+97 silly audit   '@types/json-schema': [ '7.0.15' ],
+97 silly audit   '@types/lodash': [ '4.17.13' ],
+97 silly audit   '@types/mime': [ '1.3.5' ],
+97 silly audit   '@types/ms': [ '2.1.0' ],
+97 silly audit   '@types/node': [ '22.10.2' ],
+97 silly audit   '@types/node-fetch': [ '2.6.12' ],
+97 silly audit   '@types/qs': [ '6.9.17' ],
+97 silly audit   '@types/range-parser': [ '1.2.7' ],
+97 silly audit   '@types/recharts': [ '1.8.29' ],
+97 silly audit   '@types/send': [ '0.17.4' ],
+97 silly audit   '@types/serve-static': [ '1.15.7' ],
+97 silly audit   '@types/webidl-conversions': [ '7.0.3' ],
+97 silly audit   '@types/webxr': [ '0.5.21' ],
+97 silly audit   '@types/whatwg-url': [ '13.0.0' ],
+97 silly audit   '@webgpu/types': [ '0.1.60' ],
+97 silly audit   asynckit: [ '0.4.0' ],
+97 silly audit   'call-bind-apply-helpers': [ '1.0.2' ],
+97 silly audit   'combined-stream': [ '1.0.8' ],
+97 silly audit   csstype: [ '3.1.3' ],
+97 silly audit   'delayed-stream': [ '1.0.0' ],
+97 silly audit   'dunder-proto': [ '1.0.1' ],
+97 silly audit   'es-define-property': [ '1.0.1' ],
+97 silly audit   'es-errors': [ '1.3.0' ],
+97 silly audit   'es-object-atoms': [ '1.1.1' ],
+97 silly audit   'es-set-tostringtag': [ '2.1.0' ],
+97 silly audit   fflate: [ '0.8.2' ],
+97 silly audit   'form-data': [ '4.0.2' ],
+97 silly audit   'function-bind': [ '1.1.2' ],
+97 silly audit   'get-intrinsic': [ '1.3.0' ],
+97 silly audit   'get-proto': [ '1.0.1' ],
+97 silly audit   gopd: [ '1.2.0' ],
+97 silly audit   'has-symbols': [ '1.1.0' ],
+97 silly audit   'has-tostringtag': [ '1.0.2' ],
+97 silly audit   hasown: [ '2.0.2' ],
+97 silly audit   'math-intrinsics': [ '1.1.0' ],
+97 silly audit   meshoptimizer: [ '0.18.1' ],
+97 silly audit   'mime-db': [ '1.52.0' ],
+97 silly audit   'mime-types': [ '2.1.35' ],
+97 silly audit   nanoid: [ '3.3.11' ],
+97 silly audit   picocolors: [ '1.1.1' ],
+97 silly audit   postcss: [ '8.5.3' ],
+97 silly audit   'source-map-js': [ '1.2.1' ],
+97 silly audit   'types-registry': [ '0.1.715' ],
+97 silly audit   'undici-types': [ '6.20.0' ],
+97 silly audit   '@types/canvas-confetti': [ '1.9.0' ],
+97 silly audit   '@types/jsonwebtoken': [ '9.0.9' ],
+97 silly audit   '@types/postcss-import': [ '14.0.3' ],
+97 silly audit   '@types/react': [ '19.1.1' ],
+97 silly audit   '@types/react-dom': [ '19.1.2' ],
+97 silly audit   '@types/stats.js': [ '0.17.3' ],
+97 silly audit   '@types/stylis': [ '4.2.7' ],
+97 silly audit   '@types/three': [ '0.175.0' ],
+97 silly audit   '@types/ua-parser-js': [ '0.7.39' ],
+97 silly audit   '@types/uuid': [ '10.0.0' ]
+97 silly audit }
+98 http cache @types/react@https://registry.npmjs.org/@types/react/-/react-19.1.1.tgz 1ms (cache hit)
+99 silly tarball no local data for @types/react@https://registry.npmjs.org/@types/react/-/react-19.1.1.tgz. Extracting by manifest.
+100 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 368ms
+101 silly audit report {}
+102 http fetch GET 200 https://registry.npmjs.org/@types/react/-/react-19.1.1.tgz 366ms (cache miss)
+103 silly CHANGE node_modules/@types/react
+104 verbose cwd C:\Users\Faiq\AppData\Local\Microsoft\TypeScript\5.7
+105 verbose os Windows_NT 10.0.19045
+106 verbose node v22.14.0
+107 verbose npm  v11.2.0
+108 verbose exit 0
+109 info ok

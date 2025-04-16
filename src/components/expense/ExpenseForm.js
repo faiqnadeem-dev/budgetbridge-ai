@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
-    TextField, 
-    Button, 
     MenuItem, 
     Box, 
     Paper, 
-    IconButton,
     Typography,
     Alert,
     AlertTitle,
@@ -16,13 +13,18 @@ import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import WarningIcon from '@mui/icons-material/Warning';
 import { expenseService } from '../../services/expenseService';
-import { useAuth } from '../../context/AuthContext';
+import { useFirebaseUser } from '../../context/ClerkFirebaseBridge';
 import { db } from '../../config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import CategoryManager from './CategoryManager';
+import { 
+    AccessibleTextField, 
+    AccessibleButton, 
+    AccessibleIconButton 
+} from '../../utils/accessibilityHelpers';
 
 const ExpenseForm = () => {
-    const { currentUser, token } = useAuth();
+    const { currentUser } = useFirebaseUser();
     const [categories, setCategories] = useState([]);
     const [openCategoryManager, setOpenCategoryManager] = useState(false);
     const [error, setError] = useState('');
@@ -68,7 +70,7 @@ const ExpenseForm = () => {
                 userId: currentUser.uid
             };
             
-            const response = await expenseService.addExpense(expenseData, token);
+            const response = await expenseService.addExpense(expenseData);
             
             // Check if the expense was flagged as an anomaly
             if (response.isAnomaly) {
@@ -119,21 +121,23 @@ const ExpenseForm = () => {
                 >
                     <AlertTitle>Unusual Transaction Detected</AlertTitle>
                     {anomalyReason}
-                    <Button 
+                    <AccessibleButton 
                         color="warning" 
                         size="small" 
                         component={Link} 
                         to="/anomalies"
                         sx={{ mt: 1 }}
+                        id="view-anomaly-details"
+                        label="View anomaly details"
                     >
                         View Details
-                    </Button>
+                    </AccessibleButton>
                 </Alert>
             )}
             
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} id="expense-form" name="expense-form">
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <TextField
+                    <AccessibleTextField
                         id="expense-amount"
                         label="Amount"
                         type="number"
@@ -144,7 +148,7 @@ const ExpenseForm = () => {
                     />
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <TextField
+                        <AccessibleTextField
                             id="expense-category"
                             select
                             label="Category"
@@ -159,9 +163,9 @@ const ExpenseForm = () => {
                                     {category.budget > 0 && ` (Budget: $${category.budget})`}
                                 </MenuItem>
                             ))}
-                        </TextField>
+                        </AccessibleTextField>
                         
-                        <IconButton
+                        <AccessibleIconButton
                             aria-label="manage categories"
                             onClick={() => setOpenCategoryManager(true)}
                             sx={{ 
@@ -173,12 +177,14 @@ const ExpenseForm = () => {
                                     bgcolor: '#283593'
                                 }
                             }}
+                            id="manage-categories-button"
+                            label="Manage Categories"
                         >
                             <SettingsIcon />
-                        </IconButton>
+                        </AccessibleIconButton>
                     </Box>
                     
-                    <TextField
+                    <AccessibleTextField
                         id="expense-description"
                         label="Description"
                         value={expense.description}
@@ -188,7 +194,7 @@ const ExpenseForm = () => {
                         fullWidth
                     />
                     
-                    <TextField
+                    <AccessibleTextField
                         id="expense-date"
                         label="Date"
                         type="date"
@@ -197,11 +203,11 @@ const ExpenseForm = () => {
                         required
                         fullWidth
                         InputLabelProps={{
-                            shrink: true,
+                            shrink: true
                         }}
                     />
                     
-                    <Button 
+                    <AccessibleButton 
                         type="submit" 
                         variant="contained"
                         startIcon={<AddIcon />}
@@ -209,9 +215,11 @@ const ExpenseForm = () => {
                             bgcolor: '#1a237e',
                             '&:hover': { bgcolor: '#283593' }
                         }}
+                        id="add-expense-button"
+                        label="Add Expense"
                     >
                         Add Expense
-                    </Button>
+                    </AccessibleButton>
                 </Box>
             </form>
 
